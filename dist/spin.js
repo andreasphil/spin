@@ -1,4 +1,4 @@
-function i(n,...e){let s=document.createElement("template");return s.innerHTML=String.raw({raw:n},...e),s.content.cloneNode(!0)}var t=class extends HTMLElement{static define(e="spin-bg"){if(!e)throw new Error("Custom element must specify a tag name");customElements.define(e,this)}constructor(){super();let e=this.attachShadow({mode:"closed"}),s=i`<style>
+function t(s,...e){let n=document.createElement("template");return n.innerHTML=String.raw({raw:s},...e),n.content.cloneNode(!0)}var i=class extends HTMLElement{static define(e="spin-bg"){if(!e)throw new Error("Custom element must specify a tag name");customElements.define(e,this)}constructor(){super();let e=this.attachShadow({mode:"closed"}),n=t`<style>
         @keyframes spin {
           100% {
             --spin-angle: 360deg;
@@ -6,6 +6,7 @@ function i(n,...e){let s=document.createElement("template");return s.innerHTML=S
         }
 
         :host {
+          container: spin-container / inline-size;
           display: block;
           overflow: hidden;
           position: relative;
@@ -21,7 +22,7 @@ function i(n,...e){let s=document.createElement("template");return s.innerHTML=S
         }
 
         spin-wheel {
-          --spin-radius: calc(100dvh / 2 + 250px);
+          --spin-radius: calc(100cqh / 2 + 250px);
 
           animation: var(--spin-speed) spin linear infinite normal;
           animation-delay: calc(var(--spin-speed) * var(--spin-animation-offset, 0) * -1);
@@ -30,7 +31,7 @@ function i(n,...e){let s=document.createElement("template");return s.innerHTML=S
           height: calc((var(--spin-radius) * 2));
           left: var(--spin-start-pos);
           position: absolute;
-          translate: calc(sin(var(--spin-angle)) * var(--spin-travel, 25dvw)) 0;
+          translate: calc(sin(var(--spin-angle)) * var(--spin-travel, 25cqw)) 0;
 
           background: radial-gradient(
             circle closest-side,
@@ -41,18 +42,18 @@ function i(n,...e){let s=document.createElement("template");return s.innerHTML=S
           &:nth-of-type(1) {
             --spin-color: oklch(0.82 0.17046 77.4296);
             --spin-speed: 20s;
-            --spin-start-pos: calc(40dvw - var(--spin-radius));
+            --spin-start-pos: calc(40cqw - var(--spin-radius));
           }
 
           &:nth-of-type(2) {
             --spin-animation-offset: 0.5;
             --spin-color: oklch(0.57 0.2195 11.33);
             --spin-speed: 16s;
-            --spin-start-pos: calc(60dvw - var(--spin-radius));
+            --spin-start-pos: calc(60cqw - var(--spin-radius));
           }
         }
       </style>
 
       <spin-wheel part="wheel wheel-1"></spin-wheel>
-      <spin-wheel part="wheel wheel-2"></spin-wheel>`;CSS.registerProperty({name:"--spin-angle",syntax:"<angle>",inherits:!1,initialValue:"0deg"}),e.appendChild(s)}};export{t as SpinBg};
+      <spin-wheel part="wheel wheel-2"></spin-wheel>`;CSS.registerProperty({name:"--spin-angle",syntax:"<angle>",inherits:!1,initialValue:"0deg"}),e.appendChild(n)}};export{i as SpinBg};
 //# sourceMappingURL=spin.js.map
