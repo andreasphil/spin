@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spin Demo</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <spin-bg bottom></spin-bg>
+    </div>
+  </body>
+
+  <script type="module">
+    import { SpinBg } from "./dist/spin.js";
+
+    SpinBg.define();
+
+    // Automatically reload on change when serving with `node --run dev`
+    new EventSource("/esbuild").addEventListener("change", () => location.reload());
+  </script>
+</html>
