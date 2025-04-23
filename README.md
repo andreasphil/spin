@@ -6,6 +6,7 @@
   <strong>Beautifully animated backgrounds</strong>
 </p>
 
+- 👀 Check out the [demo](https://andreasphil.github.io/spin/)
 - 🤩 Easy to use and fully customizable
 - 🐛 Tiny (<1kb min+gzip) footprint with no runtime dependencies
 

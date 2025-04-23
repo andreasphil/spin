@@ -6,23 +6,248 @@
     <title>Spin Demo</title>
 
     <style>
-      body {
+      @import url(./vendor/andreasphil/design-system@v0.45.0/dist/design-system.min.css)
+      layer(theme);
+
+      :root {
+        --block-spacing-y: 0;
+        --body-padding-x: 0px;
+        --body-padding-y: 0px;
+        --body-width: auto;
+        --c-shadow: color-mix(in oklch, var(--black), transparent 92%);
+        --font-size: 14px;
+        --theme-primary: 10% 0.05 240;
+        --theme-tint: 240;
+      }
+
+      ::selection {
+        background-color: var(--neutral-300);
+      }
+
+      demo-controls {
+        backdrop-filter: blur(64px);
+        background: color-mix(in oklch, var(--c-surface-bg), transparent 30%);
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--shadow-elevation-high);
+        margin: clamp(4px, 2.617vw - 5.682px, 32px);
+        max-width: 20rem;
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+      }
+
+      form {
+        align-items: center;
+        column-gap: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 1rem;
+        row-gap: 0.75rem;
+      }
+
+      fieldset:not([data-hidden]),
+      label {
+        display: contents;
+      }
+
+      legend {
+        grid-column: 1 / span 2;
+      }
+
+      input {
         margin: 0;
-        padding: 0;
+      }
+
+      [x-cloak] {
+        display: none !important;
       }
     </style>
   </head>
 
-  <body>
-    <div id="app">
-      <spin-bg bottom></spin-bg>
+  <body data-color-scheme="light">
+    <div x-data="app">
+      <demo-controls x-cloak>
+        <ul role="tablist" data-variant="block">
+          <li role="tab">
+            <a
+              :data-active="activeTab === name"
+              @click.prevent="activeTab = name"
+              href="#"
+              x-data="{ name: 'global' }"
+            >
+              Global
+            </a>
+          </li>
+          <li role="tab">
+            <a
+              :data-active="activeTab === name"
+              @click.prevent="activeTab = name"
+              href="#"
+              x-data="{ name: 'wheel1' }"
+            >
+              Wheel 1
+            </a>
+          </li>
+          <li role="tab">
+            <a
+              :data-active="activeTab === name"
+              @click.prevent="activeTab = name"
+              href="#"
+              x-data="{ name: 'wheel2' }"
+            >
+              Wheel 2
+            </a>
+          </li>
+        </ul>
+
+        <form>
+          <fieldset x-show="activeTab === 'global'">
+            <legend data-hidden>Global</legend>
+            <label>
+              Alignment
+              <select x-model="config.global.alignment">
+                <option value="top">Top</option>
+                <option value="bottom">Bottom</option>
+              </select>
+            </label>
+
+            <label>
+              Fade (%)
+              <input type="number" min="0" max="100" x-model.number="config.global.fade" />
+            </label>
+          </fieldset>
+
+          <fieldset x-show="activeTab === 'wheel1'">
+            <legend data-hidden>Wheel 1</legend>
+            <label>
+              Color
+              <input type="text" x-model="config.wheel1.color" />
+            </label>
+
+            <label>
+              Radius
+              <input type="text" x-model="config.wheel1.radius" />
+            </label>
+
+            <label>
+              Speed (seconds)
+              <input type="number" x-model="config.wheel1.speed" />
+            </label>
+
+            <label>
+              Start position
+              <input type="text" x-model="config.wheel1.startPos" />
+            </label>
+
+            <label>
+              Movement distance
+              <input type="text" x-model="config.wheel1.travel" />
+            </label>
+          </fieldset>
+
+          <fieldset x-show="activeTab === 'wheel2'">
+            <legend data-hidden>Wheel 2</legend>
+            <label>
+              Color
+              <input type="text" x-model="config.wheel2.color" />
+            </label>
+
+            <label>
+              Radius
+              <input type="text" x-model="config.wheel2.radius" />
+            </label>
+
+            <label>
+              Speed (seconds)
+              <input type="number" x-model="config.wheel2.speed" />
+            </label>
+
+            <label>
+              Start position
+              <input type="text" x-model="config.wheel2.startPos" />
+            </label>
+
+            <label>
+              Movement distance
+              <input type="text" x-model="config.wheel2.travel" />
+            </label>
+          </fieldset>
+        </form>
+      </demo-controls>
+
+      <style x-html="customizations"></style>
+
+      <spin-bg
+        :top="config.global.alignment === 'top'"
+        :bottom="config.global.alignment === 'bottom'"
+      ></spin-bg>
     </div>
   </body>
 
   <script type="module">
     import { SpinBg } from "./dist/spin.js";
+    import Alpine from "./vendor/alpinejs@3.14.9/dist/module.esm.min.js";
+    import { useThemeColor } from "./vendor/andreasphil/design-system@v0.45.0/scripts/utils.js";
+
+    useThemeColor();
 
     SpinBg.define();
+
+    window.Alpine = Alpine;
+
+    Alpine.data("app", () => ({
+      activeTab: "global",
+
+      config: {
+        global: {
+          alignment: "bottom",
+          fade: 30,
+        },
+        wheel1: {
+          color: "oklch(0.82 0.17046 77.4296)",
+          radius: "calc(100cqh / 2 + 250px)",
+          speed: "20",
+          startPos: "calc(40cqw - var(--spin-radius))",
+          travel: "25cqw",
+        },
+        wheel2: {
+          color: "oklch(0.57 0.2195 11.33)",
+          radius: "calc(100cqh / 2 + 250px)",
+          speed: "16",
+          startPos: "calc(60cqw - var(--spin-radius))",
+          travel: "25cqw",
+        },
+      },
+
+      get customizations() {
+        return `
+          spin-bg {
+            --spin-fade: ${this.config.global.fade}%;
+
+            /* Left animated part */
+            &::part(wheel wheel-1) {
+              --spin-color: ${this.config.wheel1.color};
+              --spin-radius: ${this.config.wheel1.radius};
+              --spin-speed: ${this.config.wheel1.speed}s;
+              --spin-start-pos: ${this.config.wheel1.startPos};
+              --spin-travel: ${this.config.wheel1.travel};
+            }
+
+            /* Right animated part */
+            &::part(wheel wheel-2) {
+              --spin-color: ${this.config.wheel2.color};
+              --spin-radius: ${this.config.wheel2.radius};
+              --spin-speed: ${this.config.wheel2.speed}s;
+              --spin-start-pos: ${this.config.wheel2.startPos};
+              --spin-travel: ${this.config.wheel2.travel};
+            }
+          }
+        `;
+      },
+    }));
+
+    Alpine.start();
 
     // Automatically reload on change when serving with `node --run dev`
     new EventSource("/esbuild").addEventListener("change", () => location.reload());
